@@ -1,0 +1,24 @@
+{
+  "name": "@rtapp/cdrs-charts-packaging-api",
+  "version": "0.1.0",
+  "description": "Express.js + Octokit.js-backended API for triggering workflow dispatches programatically for automating new chart releases into our GH Pages-based Helm repo.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/code-server-boilerplates/charts.git#main"
+  },
+  "author": "Andrei Jiroh Eugenio Halili <andreijiroh@madebythepins.tk>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/code-server-boilerplates/charts/issues"
+  },
+  "homepage": "https://github.com/code-server-boilerplates/charts/tree/main#readme",
+  "dependencies": {
+    "@octokit/rest": "^18.5.6",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  }
+}

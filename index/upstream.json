@@ -1,0 +1,6 @@
+{
+  "name": "upstream",
+  "repoUrl": "https://github.com/cdr/code-server.git"
+  "repoBranch": "main",
+  "chartsDir": "ci/helm-charts"
+}

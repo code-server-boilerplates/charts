@@ -1,0 +1,6 @@
+{
+   "name": "starter-pack",
+   "repoUrl": "https://github.com/code-server-boilerplates/starter-pack.git",
+   "repoBranch": "main",
+   "chartsDir": "charts"
+}

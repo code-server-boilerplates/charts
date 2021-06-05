@@ -34,7 +34,7 @@ curl https://api.cdrs-charts.repohubdev.tk/triggerCiUpdate/slug-name \
 # {"ok":false,"description":"Missing authenication headers: X-GitHub-Token (for dispatching workflows) and X-GitHub-Login (for team membership checks).","code":408,"docs":"cdrs-docs.https://rtapp.tk/charts-packaging-api"}
 ```
 
-* create a webhook with the following info:
+* create a webhook with the following info: (API will go online soon)
     * URL: `https://api.cdrs-charts.repohubdev.tk/triggerCiUpdate/slug-name?ghToken=ghp_...&ghLogin=username`
     * SSL verification: enabled
     * Webhook secret: `plzCheckUrlQueryStrings=true`

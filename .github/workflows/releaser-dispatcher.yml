@@ -12,14 +12,17 @@ on:
         required: true
         description: "Name of Helm Chart to be released to the chart repo. Check the index/README for full list."
 
+env:
+  GH_ACTIONS_MODE: true
+
 jobs:
   publish-ci:
     name: Tag and publish chart changes
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'workflow_dispatch' }}
     env:
-      GNUPG_PASSPHARSE: ${{ secrets.RELEASES_GPG_PASSPHARSE }}
-      GNUPG_KEY_BASE64: ${{ secrets.RELEASES_GPG_KEY }}
+      RELEASES_GPG_PASSPHARSE: ${{ secrets.RELEASES_GPG_PASSPHARSE }}
+      RELEASES_GPG_KEY: ${{ secrets.RELEASES_GPG_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -38,15 +41,45 @@ jobs:
         uses: helm/chart-releaser-action@v1.2.1
         env:
           CR_TOKEN: "${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}"
+
+      # If failed, do this
+      - name: Notify people over Discord and Guilded for failed CI
+        if: ${{ failure() }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: |
+            ${{ secrets.NOTIFICATIONS_DISCORD_WEBHOOK }}
+            ${{ secrets.NOTIFICATIONS_GUILDED_WEBHOOK }}
+          status: ${{ job.status }}
+          title: "Chart Releaser failed"
+          description: "The releaser bot is having problems. Please check the CI logs for details."
+          nofail: false
+          nodetail: false
+          username: Github Actions
+          avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+
+      - name: Notify people over Discord and Guilded for successfully release
+        if: ${{ success() }}
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: |
+            ${{ secrets.NOTIFICATIONS_DISCORD_WEBHOOK }}
+            ${{ secrets.NOTIFICATIONS_GUILDED_WEBHOOK }}
+          status: ${{ job.status }}
+          title: "Charts Releaser Success"
+          description: "Everything is fine, the releaser bot is probably fine."
+          nofail: false
+          nodetail: false
+          username: Github Actions
+          avatar_url: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+
   update-charts:
     name: Update chart files
     runs-on: ubuntu-latest
     env:
       GNUPG_PASSPHARSE: ${{ secrets.RELEASES_GPG_PASSPHARSE }}
       GNUPG_KEY_BASE64: ${{ secrets.RELEASES_GPG_KEY }}
-      GH_LOGIN: RecapTimeBot
       GH_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
-      GH_ACTIONS_MODE: true
     if: ${{ github.event_name == 'workflow_dispatch' }}
     steps:
       # Step 1: Checkout
@@ -76,8 +109,8 @@ jobs:
             ${{ secrets.NOTIFICATIONS_DISCORD_WEBHOOK }}
             ${{ secrets.NOTIFICATIONS_GUILDED_WEBHOOK }}
           status: ${{ job.status }}
-          title: "Helm Charts Updater"
-          description: "Updated charts file for ${{ github.event.inputs.chartName }} for Chart Releaser bot."
+          title: "Helm Charts Updater had an problem"
+          description: "Failed to update chart files for ${{ github.event.inputs.chartName }}. Please see the CI logs for details."
           nofail: false
           nodetail: false
           username: Github Actions
@@ -92,7 +125,7 @@ jobs:
             ${{ secrets.NOTIFICATIONS_GUILDED_WEBHOOK }}
           status: ${{ job.status }}
           title: "Helm Charts Releaser"
-          description: "Published latest Helm Chart for ${{ github.event.inputs.chartName }} to Code Server Boilerplates' Helm Charts repo."
+          description: "Updated charts file for ${{ github.event.inputs.chartName }} for Chart Releaser bot."
           nofail: false
           nodetail: false
           username: Github Actions

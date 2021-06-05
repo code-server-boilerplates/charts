@@ -1,0 +1,38 @@
+#!/bin/bash
+
+debugLog() {
+  if [[ $GH_ACTIONS_MODE != "" ]]; then
+    echo "::debug::$1"
+  else
+    [ "$DEBUG" != "" ] && echo "debug: $1"
+  fi
+}
+
+errorLog() {
+  if [[ $GH_ACTIONS_MODE == "" ]]; then
+    echo "error: $1"
+  else
+    echo "::error::$1"
+  fi
+}
+
+warn() {
+  if [[ $GH_ACTIONS_MODE == "" ]]; then
+    echo "warning: $1"
+  else
+    echo "::warning ::$1"
+  fi
+}
+
+if [[ "$1" == "" ]]; then
+  echo "To check if an chart exists in the indexes, enter its name as an argument."
+elif [[ "$1" != "" ]]; then
+  debugLog "Checking $PWD/index/$1.json if exists..."
+  if [ -e "$PWD/index/$1.json" ]; then
+     jq . < ./index/$1.json
+  else
+     errorLog "That chart doesn't exist. Please either check the name if it's correct or add a new one if doesn't exist."
+     exit 1
+
+  fi
+fi

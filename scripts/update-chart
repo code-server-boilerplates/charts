@@ -1,9 +1,8 @@
 #!/bin/bash
 
-
 debugLog() {
   if [[ $GH_ACTIONS_MODE != "" ]]; then
-    [ "$DEBUG" != "" ] && echo "::debug::$1"
+    echo "::debug::$1"
   else
     [ "$DEBUG" != "" ] && echo "debug: $1"
   fi
@@ -31,12 +30,13 @@ if [[ $JQ_PATH == "" ]]; then
   errorLog "jq not found in PATH. Please install jq on your system to continue." && exit 1
 fi
 
-PACKAGE_INDEX_FILE="${PWD}/index/${1}.json"
-
-if [[ ! -d $PACKAGE_INDEX_FILE ]]; then
-  errorLog "That chart doesn't exist on our index. Please file a new issue or send us an PR to add that into our charts index. Learn more at https://cdrs-docs.rtapp.tk/charts-index" && exit 1
+if ./scripts/check-if-manifest-exists "$1"; then
+  debugLog "Everything is fine"
+else
+  errorLog "Is that index file ever exists?"
 fi
 
+PACKAGE_INDEX_FILE="${PWD}/index/${1}.json"
 CLONE_DIR="${PWD}/tmp/$(jq -r .name < ${PACKAGE_INDEX_FILE})"
 CHART_NAME="$(jq -r .name < ${PACKAGE_INDEX_FILE})"
 GIT_REPO_URL="$(jq -r .repoUrl < ${PACKAGE_INDEX_FILE})"

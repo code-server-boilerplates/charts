@@ -5,7 +5,7 @@
 # at https://github.com/Homebrew/actions/blob/master/LICENSE for full legal text. While MIT license and BSD-2-Clause is
 # compartible with each other, just like BSD 3-Clause, they haveminute differences to the MIT license.
 
-set -euo pipefail
+set -eo pipefail
 
 # then setup our ci
 git config --global user.email "releases@madebythepinshub.tk"
@@ -19,7 +19,7 @@ errorLog() {
   fi
 }
 
-if [[ $HOMEBREW_ACTIONS_USED == "" ]]; then
+if [[ $HOMEBREW_ACTIONS_USED != "true" ]]; then
   # then get the Software Releases key
   GPG_SIGNING_KEY="${RELEASES_GPG_KEY}"
 
@@ -49,7 +49,6 @@ if [[ $HOMEBREW_ACTIONS_USED == "" ]]; then
 
   git config --global user.signingkey $GPG_KEY_ID
   git config --global commit.gpgsign true
-else
-  echo "HOMEBREW_ACTIONS_USED variable is set, skipping the"
-  echo "wrapper script creation..."
+elif [[ $HOMEBREW_ACTION_USED == "true" ]]; then
+  echo "HOMEBREW_ACTIONS_USED variable is set to true, skipping the wrapper script creation..."
 fi

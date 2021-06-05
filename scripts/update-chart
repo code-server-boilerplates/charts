@@ -58,7 +58,7 @@ debugLog "Copying source chart to this repo's charts"
 if [ ! -d "./charts/$CHARTS_NAME" ]; then
   rm -rv "./charts/$CHART_NAME"
 else
-  warn "Looks like new chart is about to be added. In case of renames, make sure to increment the chart version and enable deprecation flag with reason as per https://cdrs-docs.rtapp.tk/renamed-charts."
+  warn "Looks like new chart is about to be added. In case of renames, make sure to increment the chart version at either minor or patch number and enable deprecation flag with reason as per https://cdrs-docs.rtapp.tk/renamed-charts."
 fi
 cp -r "$SRC_CHARTS_DIRECTORY" "./charts/$CHART_NAME"
 
@@ -69,5 +69,5 @@ if [[ -z $(git status -s -uall) ]] && [[ $NO_PUSH != "" ]]; then
   git commit --gpg-sign -m "chore(helm-charts): Update package repo index and update charts" --signoff
   git push origin
 else
-  warn "No changes detected."
+  warn "No changes detected. (We didn't echo out this error as an error to prevent false positives and the flood of error notifications in Discord and Guilded. If the problem arises during the job, please check the chart's manifest file here and in source chart repo for any mismatches.)"
 fi

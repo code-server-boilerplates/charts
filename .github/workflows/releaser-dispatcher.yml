@@ -109,8 +109,8 @@ jobs:
             ${{ secrets.NOTIFICATIONS_DISCORD_WEBHOOK }}
             ${{ secrets.NOTIFICATIONS_GUILDED_WEBHOOK }}
           status: ${{ job.status }}
-          title: "Helm Charts Updater had an problem"
-          description: "Failed to update chart files for ${{ github.event.inputs.chartName }}. Please see the CI logs for details."
+          title: "Helm Charts Updater had an problem while updating source files"
+          description: "Failed to update chart files for ${{ github.event.inputs.chartName }}. Please see the CI logs for details and if necessary, add, update or remove entries from the index directory."
           nofail: false
           nodetail: false
           username: Github Actions
@@ -124,8 +124,8 @@ jobs:
             ${{ secrets.NOTIFICATIONS_DISCORD_WEBHOOK }}
             ${{ secrets.NOTIFICATIONS_GUILDED_WEBHOOK }}
           status: ${{ job.status }}
-          title: "Helm Charts Releaser"
-          description: "Updated charts file for ${{ github.event.inputs.chartName }} for Chart Releaser bot."
+          title: "Helm Charts Updater sucessfully updated chart files for ${{ github.eveng.inputs.chartName }}"
+          description: "Updated charts file for ${{ github.event.inputs.chartName }} for Chart Releaser bot to be tagged and pushed to GitHub Pages."
           nofail: false
           nodetail: false
           username: Github Actions

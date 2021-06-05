@@ -7,38 +7,49 @@
 
 set -euo pipefail
 
-# clone our publishing repo first, we may move development to GitLab
-# soon. we may keep this GitHub repo up for CI stuff
-git clone -b gh-pages https://github.com/code-server-boilerplates/charts out
-
 # then setup our ci
 git config --global user.email "releases@madebythepinshub.tk"
 git config --global user.name "Software Releases | The Pins Team"
 
-# then get the Software Releases key
-GPG_SIGNING_KEY="${RELEASES_GPG_KEY}"
+errorLog() {
+  if [[ $GH_ACTIONS_MODE == "" ]];
+    echo "error: $1"
+  else
+    echo "::error::$1"
+  fi
+}
 
-if [[ $GPG_SIGNING_KEY == ]]; then
-   echo "error: RELEASES_GPG_KEY is missing. Make sure you set it before"
-   echo "error: running thus script"
-   exit 1
+if [[ $HOMEBREW_ACTIONS_USED == "" ]]; then
+  # then get the Software Releases key
+  GPG_SIGNING_KEY="${RELEASES_GPG_KEY}"
+
+  if [[ $GPG_SIGNING_KEY == "" ]]; then
+     errorLog "RELEASES_GPG_KEY is missing. Make sure you set it before running this script"
+     exit 1
+  elif [[ $RELEASES_GPG_PASSPHARSE == "" ]]; then
+     errorLog "GPG passpharse is missing, aborting CI setup..."
+     exit 1 
+  fi
+
+  # ensure GNU Privacy Guard home dir is ready.
+  export GNUPGHOME="$HOME/.gnupg/"
+  mkdir -p "$GNUPGHOME"
+  chmod 0700 "$GNUPGHOME"
+
+  GPG_EXEC=$(command -v gpg)
+
+  # Wrapper script to use passphrase non-interactively with git
+  GPG_WITH_PASSPHRASE=$(mktemp)
+  echo "$GPG_EXEC"' --pinentry-mode loopback --passphrase "$RELEASES_GPG_PASSPHARSE" --batch --no-tty "$@"' > $GPG_WITH_PASSPHRASE
+  chmod +x $GPG_WITH_PASSPHRASE
+  git config --global gpg.program $GPG_WITH_PASSPHRASE
+
+  echo "$GPG_SIGNING_KEY" | base64 --decode | gpg --batch --no-tty --quiet --yes --import
+  GPG_KEY_ID=$(gpg --list-keys --with-colons | sed -ne "/^sub:/ p;" | cut -d: -f5)
+
+  git config --global user.signingkey $GPG_KEY_ID
+  git config --global commit.gpgsign true
+else
+  echo "HOMEBREW_ACTIONS_USED variable is set, skipping the"
+  echo "wrapper script creation..."
 fi
-
-# ensure GNU Privacy Guard home dir is ready.
-export GNUPGHOME="$HOME/.gnupg/"
-mkdir -p "$GNUPGHOME"
-chmod 0700 "$GNUPGHOME"
-
-GPG_EXEC=$(command -v gpg)
-
-# Wrapper script to use passphrase non-interactively with git
-GPG_WITH_PASSPHRASE=$(mktemp)
-echo "$GPG_EXEC"' --pinentry-mode loopback --passphrase "$RELEASES_GPG_PASSPHARSE" --batch --no-tty "$@"' > $GPG_WITH_PASSPHRASE
-chmod +x $GPG_WITH_PASSPHRASE
-git config --global gpg.program $GPG_WITH_PASSPHRASE
-
-echo "$GPG_SIGNING_KEY" | base64 --decode | gpg --batch --no-tty --quiet --yes --import
-GPG_KEY_ID=$(gpg --list-keys --with-colons | sed -ne "/^sub:/ p;" | cut -d: -f5)
-
-git config --global user.signingkey $GPG_KEY_ID
-git config --global commit.gpgsign true

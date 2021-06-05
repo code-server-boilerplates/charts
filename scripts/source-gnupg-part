@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ $(git config --global gpg.program) != "" ]]; then
+  export GNUPG_PATH="$(git config --global gpg.program)"
+else
+  export GNUPG_PATH=$(which gpg)
+fi
+
+function gpg() {
+  command "$GNUPG_PATH" "$@"
+}
+
+function gpg2() {
+  command "$GNUPG_PATH" "$@"
+}

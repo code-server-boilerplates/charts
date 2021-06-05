@@ -1,9 +1,0 @@
-Hi, you're opened this Helm Chart repo in an browser. To get started, add this repository
-into your installation of Helm:
-
-    helm repo add cdrs-deploy https://code-server-boilerplates.github.io/charts
-
-Don't have Helm installed? See the Helm's documentation at https://helm.sh/docs/intro/install/
-for details on how to install Helm on your machine.
-
-Learn more about this repo on GitHub at https://github.com/code-server-boilerplates/charts.

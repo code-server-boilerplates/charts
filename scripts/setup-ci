@@ -12,7 +12,7 @@ git config --global user.email "releases@madebythepinshub.tk"
 git config --global user.name "Software Releases | The Pins Team"
 
 errorLog() {
-  if [[ $GH_ACTIONS_MODE == "" ]];
+  if [[ $GH_ACTIONS_MODE == "" ]]; then
     echo "error: $1"
   else
     echo "::error::$1"

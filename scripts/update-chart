@@ -55,7 +55,11 @@ mkdir ./tmp
 git clone --progress --quiet --branch $GIT_REPO_BRANCH $GIT_REPO_URL $CLONE_DIR
 
 debugLog "Copying source chart to this repo's charts"
-rm -rv "./charts/$CHART_NAME"
+if [ ! -d "./charts/$CHARTS_NAME" ]; then
+  rm -rv "./charts/$CHART_NAME"
+else
+  warn "Looks like new chart is about to be added."
+fi
 cp "$SRC_CHARTS_DIRECTORY" "./charts/$CHART_NAME"
 
 debugLog "Commiting changes and pushing to GitHub..."

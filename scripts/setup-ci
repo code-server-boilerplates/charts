@@ -8,7 +8,7 @@
 set -eo pipefail
 
 # then setup our ci
-git config --global user.email "releases@madebythepinshub.tk"
+git config --global user.email "releases@madebythepins.tk"
 git config --global user.name "Software Releases | The Pins Team"
 
 errorLog() {

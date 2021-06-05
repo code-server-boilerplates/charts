@@ -1,3 +1,37 @@
 apiVersion: v1
-entries: {}
-generated: "2021-06-05T15:13:44.040894646Z"
+entries:
+  code-server:
+  - apiVersion: v2
+    appVersion: 3.10.2
+    created: "2021-06-05T15:33:32.71080675Z"
+    description: A Helm chart for cdr/code-server
+    digest: a2df79700528d58cde4f87bebbf46fbd7a907b6d6045a01f7ede55690e832d6e
+    name: code-server
+    type: application
+    urls:
+    - https://github.com/code-server-boilerplates/charts/releases/download/code-server-1.0.3/code-server-1.0.3.tgz
+    version: 1.0.3
+  starter-pack:
+  - apiVersion: v2
+    appVersion: 3.10.2
+    created: "2021-06-05T15:33:32.859900251Z"
+    description: A Helm chart for deploying code-server, with all the essientials
+      like Cloudflare Tunnel and croc.
+    digest: fefeb6c22544e26b6e189943a5e7bbc839d2469b146fe73f494509ab79c22e41
+    home: https://github.com/code-server-boilerplates/starter-pack
+    keywords:
+    - starter-pack
+    - github-repo-templates
+    maintainers:
+    - email: andreijiroh@madebythepins.tk
+      name: Andrei Jiroh Halili
+      url: https://github.com/AndreiJirohHaliliDev2006
+    name: starter-pack
+    sources:
+    - https://github.com/code-server-boilerplates/starter-pack
+    - https://github.com/cdr/code-server
+    type: application
+    urls:
+    - https://github.com/code-server-boilerplates/charts/releases/download/starter-pack-0.1.0/starter-pack-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-06-05T15:33:32.859904951Z"

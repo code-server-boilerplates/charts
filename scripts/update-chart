@@ -16,15 +16,36 @@ if [[ ! -d $PACKAGE_INDEX_FILE ]]; then
   exit 1
 fi
 
-CLONE_DIR="${PWD}/$(jq -r .name < ${PACKAGE_INDEX_FILE})"
+CLONE_DIR="${PWD}/tmp/$(jq -r .name < ${PACKAGE_INDEX_FILE})"
 CHART_NAME="$(jq -r .name < ${PACKAGE_INDEX_FILE})"
 GIT_REPO_URL="$(jq -r .repoUrl < ${PACKAGE_INDEX_FILE})"
 GIT_REPO_BRANCH="$(jq -r .repoBranch < ${PACKAGE_INDEX_FILE})"
 SRC_CHARTS_DIRECTORY="${CLONE_DIR}/$(jq -r .chartsDir < ${PACKAGE_INDEX_FILE})"
 
 debugLog() {
-  [ "$DEBUG" != "" ] && echo "debug: $1"
+  if [[ $GH_ACTIONS_MODE != "" ]]; then
+    [ "$DEBUG" != "" ] && echo "::debug::$1"
+  else
+    [ "$DEBUG" != "" ] && echo "debug: $1"
+  fi
 }
+
+errorLog() {
+  if [[ $GH_ACTIONS_MODE == "" ]]; then
+    echo "error: $1"
+  else
+    echo "::error::$1"
+  fi
+}
+
+warn() {
+  if [[ $GH_ACTIONS_MODE == "" ]]; then
+    echo "warning: $1"
+  else
+    echo "::warning ::$1"
+  fi
+}
+
 
 debugLog "============== CONFIGURATION DEBUGGER ============"
 debugLog "Clone directory: $CLONE_DIR"
@@ -34,13 +55,18 @@ debugLog "Source Helm Charts directory: $SRC_CHARTS_DIRECTORY"
 debugLog "=================================================="
 
 debugLog "Cloning $GIT_REPO_URL#$GIT_REPO_BRANCH into $CLONE_DIR"
+mkdir ./tmp
 git clone --progress --quiet --branch $GIT_REPO_BRANCH $GIT_REPO_URL $CLONE_DIR
 
 debugLog "Copying source chart to this repo's charts"
 rm -rv "./charts/$CHART_NAME"
-cp -R "$SRC_CHARTS_DIRECTORY" "./$CHART_NAME"
+cp "$SRC_CHARTS_DIRECTORY" "./charts/$CHART_NAME"
 
 debugLog "Commiting changes and pushing to GitHub..."
-git add .
-git commit --gpg-sign -m "chore(helm-charts): Update package repo index and update charts" --signoff
-git push origin
+if [[ -z $(git status -s -uall) ]]; then
+  git add .
+  git commit --gpg-sign -m "chore(helm-charts): Update package repo index and update charts" --signoff
+  git push origin
+else
+  warn "No changes detected."
+fi

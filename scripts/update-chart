@@ -52,7 +52,7 @@ debugLog "=================================================="
 
 debugLog "Cloning $GIT_REPO_URL#$GIT_REPO_BRANCH into $CLONE_DIR"
 mkdir ./tmp
-git clone --progress --quiet --branch $GIT_REPO_BRANCH $GIT_REPO_URL $CLONE_DIR
+git clone --progress --branch $GIT_REPO_BRANCH $GIT_REPO_URL $CLONE_DIR
 
 debugLog "Copying source chart to this repo's charts"
 if [ ! -d "./charts/$CHARTS_NAME" ]; then
@@ -63,11 +63,13 @@ fi
 cp -r "$SRC_CHARTS_DIRECTORY" "./charts/$CHART_NAME"
 
 debugLog "Commiting changes and pushing to GitHub..."
-debugLog "$(git status -s uall)"
-if [[ -z $(git status -s -uall) ]] && [[ $NO_PUSH != "" ]]; then
+debugLog "$(git diff HEAD)"
+if [[ -z $(git diff HEAD) ]] && [[ $NO_PUSH == "" ]]; then
   git add charts/
   git commit --gpg-sign -m "chore(helm-charts): Update package repo index and update charts" --signoff
   git push origin
+elif [[ $NO_PUSH != "" ]]; then
+  warn "Skipped commiting of changes, please commit them manually. (We didn't echo out this error as an error to prevent false positives in our CI and the flood of error notifications in Discord and Guilded. If the problem arises during the job, please check the chart's manifest file here and in source chart repo for any mismatches.)"
 else
-  warn "No changes detected. (We didn't echo out this error as an error to prevent false positives and the flood of error notifications in Discord and Guilded. If the problem arises during the job, please check the chart's manifest file here and in source chart repo for any mismatches.)"
+  warn "No changes detected. (We didn't echo out this error as an error to prevent false positives in our CI and the flood of error notifications in Discord and Guilded. If the problem arises during the job, please check the chart's manifest file here and in source chart repo for any mismatches.)"
 fi

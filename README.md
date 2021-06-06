@@ -1,5 +1,7 @@
 # Helm Charts Repo for Deploying code-server to Kubernetes
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/deploy-code-server)](https://artifacthub.io/packages/search?repo=deploy-code-server)
+
 You're navigating into an community-maintained Helm Charts repo for all Kubernetes stuff on deploying `code-server`. To learn more, [visit the GitHub repo](https://github.co/code-server-boilerplates/charts)
 
 ## Usage
@@ -29,6 +31,14 @@ $EDITOR values.yml
 # for any additional steps, under the NOTES section)
 $ helm upgrade --install code-server deploy-code-server/code-server -f values.yaml
 ```
+
+## CI Status
+
+| GitHub Actions Job | Badge |
+| --- | --- |
+| Manual Chart files Updater | [![Helm Charts CI](https://github.com/code-server-boilerplates/charts/actions/workflows/releaser-dispatcher.yml/badge.svg?event=workflow_dispatch)](https://github.com/code-server-boilerplates/charts/actions/workflows/releaser-dispatcher.yml) |
+| Chart Releaser CI | [![Helm Charts CI](https://github.com/code-server-boilerplates/charts/actions/workflows/releaser-dispatcher.yml/badge.svg?event=push)](https://github.com/code-server-boilerplates/charts/actions/workflows/releaser-dispatcher.yml) |
+| Chart Files Updater Automation | soon |
 
 ## Maintainers
 

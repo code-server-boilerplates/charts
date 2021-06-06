@@ -1,0 +1,9 @@
+repositoryID: e60a2e75-4ab0-414e-af18-ba50d357bd94
+owners:
+  - name: Andrei Jiroh Halili
+    email: andreijiroh@madebythepins.tk
+ignore:
+  # We don't own this package since it's officially
+  # maintained by the code-server team and we just pull
+  # updates from their canonical repo.
+  - code-server

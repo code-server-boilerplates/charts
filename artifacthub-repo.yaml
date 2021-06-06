@@ -1,7 +1,13 @@
-repositoryID: e60a2e75-4ab0-414e-af18-ba50d357bd94
+repositoryID: 246dadba-fc30-4e27-920c-3b586491fedf
+
 owners:
+  # the owner of this chart repo
   - name: Andrei Jiroh Halili
     email: andreijiroh@madebythepins.tk
+  # our bot's Git commit info, just in case
+  - name: Software Releases | The Pins Team
+    email: releases@madebythepins.tk
+
 ignore:
   # We don't own this package since it's officially
   # maintained by the code-server team and we just pull

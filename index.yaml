@@ -14,6 +14,28 @@ entries:
   starter-pack:
   - apiVersion: v2
     appVersion: 3.10.2
+    created: "2021-06-07T07:45:43.789666524Z"
+    description: A Helm chart for deploying code-server, with all the essientials
+      like Cloudflare Tunnel and croc.
+    digest: 88bbd264fd764772ddc673e88d9566fe55f6e11a2016a884ce2afb9eb2b0d0d1
+    home: https://github.com/code-server-boilerplates/starter-pack
+    keywords:
+    - starter-pack
+    - github-repo-templates
+    maintainers:
+    - email: andreijiroh@madebythepins.tk
+      name: Andrei Jiroh Halili
+      url: https://github.com/AndreiJirohHaliliDev2006
+    name: starter-pack
+    sources:
+    - https://github.com/code-server-boilerplates/starter-pack
+    - https://github.com/cdr/code-server
+    type: application
+    urls:
+    - https://github.com/code-server-boilerplates/charts/releases/download/starter-pack-0.1.1/starter-pack-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 3.10.2
     created: "2021-06-05T15:33:32.859900251Z"
     description: A Helm chart for deploying code-server, with all the essientials
       like Cloudflare Tunnel and croc.
@@ -34,4 +56,4 @@ entries:
     urls:
     - https://github.com/code-server-boilerplates/charts/releases/download/starter-pack-0.1.0/starter-pack-0.1.0.tgz
     version: 0.1.0
-generated: "2021-06-05T15:33:32.859904951Z"
+generated: "2021-06-07T07:45:43.789678125Z"

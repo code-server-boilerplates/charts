@@ -4,7 +4,9 @@
   "description": "Express.js + Octokit.js-backended API for triggering workflow dispatches programatically for automating new chart releases into our GH Pages-based Helm repo.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -18,7 +20,11 @@
   "homepage": "https://github.com/code-server-boilerplates/charts/tree/main#readme",
   "dependencies": {
     "@octokit/rest": "^18.5.6",
+    "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }

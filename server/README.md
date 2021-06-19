@@ -23,7 +23,7 @@ cp .env.ezample .env
 $EDITOR .env
 ```
 
-Run the development server with `npm run dev`.
+Run the development server with `npm run dev` (with debug messages).
 
 ### Required Dependencies
 
@@ -31,3 +31,7 @@ Run the development server with `npm run dev`.
 * npmjs 7.x (preferred to use lockfileVersion@v2, upgrade with `npm i -g npm@latest` first)
 * GitHub PAT and
 * To test team membership checks, the `CHARTS_REPO_OWNER` must belong into an Organization.
+
+## WARNING
+
+Do not enable debugging mode in production since it will log PATs to the console, which is dangerous if some malicious person use them to spam workflow dispatches and even clone private repos of vicitims.

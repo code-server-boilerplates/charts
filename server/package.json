@@ -20,9 +20,9 @@
   "homepage": "https://github.com/code-server-boilerplates/charts/tree/main#readme",
   "dependencies": {
     "@octokit/rest": "^18.5.6",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.20.1",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1"
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
